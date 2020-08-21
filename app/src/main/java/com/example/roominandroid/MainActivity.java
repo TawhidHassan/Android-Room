@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                for (int i=0; i<stuData.size();i++){
 
-                   Toast.makeText(MainActivity.this, stuData.get(i).getStuFirstName(), Toast.LENGTH_SHORT).show();
+                   Toast.makeText(MainActivity.this,stuData.get(i).getStuId() +") "+ stuData.get(i).getStuFirstName() +"-> "+stuData.get(i).getStuClass() , Toast.LENGTH_SHORT).show();
                }
             }
         });
@@ -65,7 +65,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                myDatabase.dao().deleteStu(Integer.parseInt(deleteID.getText().toString()));
+            }
+        });
 
 
 

@@ -21,7 +21,8 @@ public interface DAO {
     @Query("Update Student set stuFirstName=:stuName where stuId=:stuId")
     void updateStudent(String stuName,int stuId);
 
-
+    @Query("Delete from Student where stuId = :stuID")
+    void deleteStu (int stuID);
 
 
 }
