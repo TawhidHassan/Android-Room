@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.roominandroid.Room.MyDatabase;
 import com.example.roominandroid.Room.Student;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     EditText firstName , secondName, className , updatename , updateid , deleteID;
     Button insert , read , btnUpdate , btnDelete;
+    MyDatabase myDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,18 +33,46 @@ public class MainActivity extends AppCompatActivity {
         read = (Button) findViewById(R.id.read);
         btnUpdate = (Button) findViewById(R.id.btnUpdate);
         btnDelete = (Button) findViewById(R.id.btnDelete);
+        setUpDB();
 
 
         insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Student student=new Student(firstName.getText().toString(),secondName.getText().toString(),className.getText().toString());
-                MyDatabase myDatabase= Room.databaseBuilder(MainActivity.this,MyDatabase.class,"StudentDB")
-                        .allowMainThreadQueries().build();
+
                 myDatabase.dao().studentInsertion(student);
             }
         });
 
+        read.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+               List<Student>stuData= myDatabase.dao().getStudent();
+
+               for (int i=0; i<stuData.size();i++){
+
+                   Toast.makeText(MainActivity.this, stuData.get(i).getStuFirstName(), Toast.LENGTH_SHORT).show();
+               }
+            }
+        });
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myDatabase.dao().updateStudent(updatename.getText().toString() , Integer.parseInt(updateid.getText().toString()));
+            }
+        });
+
+
+
+
+
+    }
+
+    private void setUpDB(){
+         myDatabase= Room.databaseBuilder(MainActivity.this,MyDatabase.class,"StudentDB")
+                .allowMainThreadQueries().build();
     }
 }
